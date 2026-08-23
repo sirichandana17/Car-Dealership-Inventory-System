@@ -57,7 +57,8 @@ async function remove(id) {
 }
 
 async function decrementQuantity(id) {
-  await pool.query('UPDATE vehicles SET quantity = quantity - 1 WHERE id = ? AND quantity > 0', [id]);
+  const [result] = await pool.query('UPDATE vehicles SET quantity = quantity - 1 WHERE id = ? AND quantity > 0', [id]);
+  if (result.affectedRows === 0) return null;
   return findById(id);
 }
 

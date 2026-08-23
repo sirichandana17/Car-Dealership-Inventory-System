@@ -43,7 +43,9 @@ async function purchaseVehicle(id) {
   const vehicle = await Vehicle.findById(id);
   if (!vehicle) { const e = new Error('Vehicle not found'); e.status = 404; throw e; }
   if (vehicle.quantity === 0) { const e = new Error('Out of stock'); e.status = 400; throw e; }
-  return Vehicle.decrementQuantity(id);
+  const updatedVehicle = await Vehicle.decrementQuantity(id);
+  if (!updatedVehicle) { const e = new Error('Out of stock'); e.status = 400; throw e; }
+  return updatedVehicle;
 }
 
 async function restockVehicle(id, amount) {

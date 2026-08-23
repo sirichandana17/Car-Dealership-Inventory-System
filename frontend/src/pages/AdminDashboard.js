@@ -125,7 +125,7 @@ export default function AdminDashboard() {
             <h2 className="text-lg font-bold text-white mb-1">Edit Vehicle</h2>
             <p className="text-zinc-500 text-sm mb-5">{editing.make} {editing.model}</p>
             <VehicleForm
-              initial={{ make: editing.make, model: editing.model, category: editing.category, price: editing.price, quantity: editing.quantity, image_url: editing.image_url || '' }}
+              initial={{ ...editing, image_url: editing.image_url || '' }}
               onSubmit={handleEdit}
               onCancel={() => setEditing(null)}
               loading={formLoading}
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
               <table className="w-full text-sm">
                 <thead className="border-b border-zinc-800">
                   <tr>
-                    {['Image', 'Make', 'Model', 'Category', 'Price', 'Qty', 'Actions'].map(h => (
+                    {['Image', 'Make', 'Model', 'Year', 'Category', 'Price', 'Qty', 'Actions'].map(h => (
                       <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-zinc-600 uppercase tracking-wider">
                         {h}
                       </th>

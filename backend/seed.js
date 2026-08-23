@@ -6,8 +6,12 @@ async function seed() {
   console.log('Seeding database...');
 
   // Admin user — credentials stored only in .env, not printed
-  const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Admin@1234', 10);
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@autodealer.com';
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminEmail || !adminPassword) {
+    throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD must be set before seeding.');
+  }
+  const hash = await bcrypt.hash(adminPassword, 10);
   await pool.query('DELETE FROM users WHERE email = ?', [adminEmail]);
   await pool.query(
     'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
