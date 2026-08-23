@@ -165,7 +165,6 @@ The client opens at `http://localhost:3001` and proxies API calls to port 3000.
 | `POST` | `/api/vehicles/:id/purchase` | Authenticated | Purchase an in-stock vehicle |
 | `POST` | `/api/vehicles/:id/restock` | Admin | Increase vehicle stock |
 
-
 ## Authentication and Security
 
 Send protected requests with `Authorization: Bearer <token>`. New registrations always receive the `USER` role. Administrator routes require a JWT containing `ADMIN`.
