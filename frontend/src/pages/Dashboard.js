@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import VehicleCard from '../components/VehicleCard';
+import VehicleDetail from '../components/VehicleDetail';
 import SearchFilters from '../components/SearchFilters';
 import Loading from '../components/Loading';
 import Notification from '../components/Notification';
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const [filters, setFilters] = useState(emptyFilters);
   const [purchasing, setPurchasing] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [detailId, setDetailId] = useState(null);
 
   const fetchVehicles = useCallback(async () => {
     setLoading(true);
@@ -56,6 +58,15 @@ export default function Dashboard() {
         <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />
       )}
 
+      {detailId && (
+        <VehicleDetail
+          vehicleId={detailId}
+          onClose={() => setDetailId(null)}
+          onPurchase={handlePurchase}
+          purchasing={purchasing}
+        />
+      )}
+
       {/* Hero */}
       <div className="relative border-b border-zinc-800 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=60')] bg-cover bg-center opacity-10" />
@@ -64,7 +75,7 @@ export default function Dashboard() {
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-3">
             Our <span className="text-red-500">Showroom</span>
           </h1>
-          <p className="text-zinc-500 text-lg">Browse and purchase from our exclusive collection.</p>
+          <p className="text-zinc-500 text-lg">Click any vehicle to view full details. All prices in INR.</p>
         </div>
       </div>
 
@@ -86,7 +97,13 @@ export default function Dashboard() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {vehicles.map(v => (
-                <VehicleCard key={v.id} vehicle={v} onPurchase={handlePurchase} purchasing={purchasing} />
+                <VehicleCard
+                  key={v.id}
+                  vehicle={v}
+                  onPurchase={handlePurchase}
+                  purchasing={purchasing}
+                  onViewDetail={setDetailId}
+                />
               ))}
             </div>
           </>

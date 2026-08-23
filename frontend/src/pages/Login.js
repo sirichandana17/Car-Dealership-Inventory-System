@@ -32,16 +32,12 @@ export default function Login() {
     }
   };
 
-  const fillAdmin = () => setForm({ email: 'admin@autodealer.com', password: 'Admin@1234' });
-
   return (
     <div className="min-h-screen bg-zinc-950 flex">
       {/* Left panel */}
       <div className="hidden lg:flex flex-1 relative overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&q=80"
-          alt="car" className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
+        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200&q=80"
+          alt="car" className="absolute inset-0 w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/60 to-transparent" />
         <div className="relative z-10 flex flex-col justify-end p-16">
           <div className="w-12 h-1 bg-red-500 mb-6 rounded-full" />
@@ -98,22 +94,16 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Admin quick-fill */}
-          <div className="mt-6 p-4 bg-zinc-900 border border-zinc-700 rounded-xl">
-            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Demo Admin Access</p>
-            <div className="text-xs text-zinc-500 space-y-1 mb-3">
-              <p>Email: <span className="text-zinc-300 font-mono">admin@autodealer.com</span></p>
-              <p>Password: <span className="text-zinc-300 font-mono">Admin@1234</span></p>
-            </div>
-            <button onClick={fillAdmin}
-              className="text-xs bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-zinc-300 px-3 py-1.5 rounded-lg transition w-full">
-              Fill Admin Credentials
-            </button>
-          </div>
-
           <p className="text-center text-sm text-zinc-600 mt-6">
             Don't have an account?{' '}
             <Link to="/register" className="text-red-500 font-medium hover:text-red-400">Register</Link>
+          </p>
+
+          {/* Hidden admin access — not visible, only accessible via direct URL */}
+          <p className="text-center mt-4">
+            <Link to="/admin-login" className="text-zinc-800 hover:text-zinc-700 text-xs transition select-none">
+              ·
+            </Link>
           </p>
         </div>
       </div>

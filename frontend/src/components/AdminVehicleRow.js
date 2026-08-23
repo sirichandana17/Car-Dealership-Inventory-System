@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatINR, formatUSD } from '../utils/price';
 
 const FALLBACK = 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200&q=60';
 
@@ -22,12 +23,16 @@ export default function AdminVehicleRow({ vehicle, onEdit, onDelete, onRestock }
       </td>
       <td className="px-4 py-3 font-semibold text-white">{vehicle.make}</td>
       <td className="px-4 py-3 text-zinc-400">{vehicle.model}</td>
+      <td className="px-4 py-3 text-zinc-500 text-xs">{vehicle.year}</td>
       <td className="px-4 py-3">
         <span className="bg-zinc-800 text-zinc-400 text-xs px-2 py-0.5 rounded-lg border border-zinc-700">
           {vehicle.category}
         </span>
       </td>
-      <td className="px-4 py-3 font-bold text-white">${Number(vehicle.price).toLocaleString()}</td>
+      <td className="px-4 py-3">
+        <p className="font-bold text-white text-sm">{formatINR(vehicle.price)}</p>
+        <p className="text-zinc-600 text-xs">{formatUSD(vehicle.price)}</p>
+      </td>
       <td className="px-4 py-3">
         <span className={`font-bold text-sm ${vehicle.quantity === 0 ? 'text-red-500' : 'text-green-400'}`}>
           {vehicle.quantity}

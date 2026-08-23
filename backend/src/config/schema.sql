@@ -13,11 +13,17 @@ CREATE TABLE IF NOT EXISTS vehicles (
   make VARCHAR(100) NOT NULL,
   model VARCHAR(100) NOT NULL,
   category VARCHAR(100) NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
+  year INT UNSIGNED NOT NULL DEFAULT 2024,
+  price DECIMAL(12, 2) NOT NULL,
   quantity INT UNSIGNED NOT NULL DEFAULT 0,
+  fuel_type VARCHAR(50) DEFAULT 'Petrol',
+  transmission VARCHAR(50) DEFAULT 'Automatic',
+  mileage VARCHAR(50) DEFAULT NULL,
+  description TEXT DEFAULT NULL,
   image_url VARCHAR(500) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_vehicles_make_model (make, model),
-  INDEX idx_vehicles_category (category)
+  INDEX idx_vehicles_category (category),
+  INDEX idx_vehicles_year (year)
 );
