@@ -99,12 +99,16 @@ export default function Login() {
             <Link to="/register" className="text-red-500 font-medium hover:text-red-400">Register</Link>
           </p>
 
-          {/* Hidden admin access — not visible, only accessible via direct URL */}
-          <p className="text-center mt-4">
-            <Link to="/admin-login" className="text-zinc-800 hover:text-zinc-700 text-xs transition select-none">
-              ·
+          {/* Admin login — visible but separate */}
+          <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
+            <Link to="/admin-login"
+              className="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-xs font-medium transition">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Admin Login
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>

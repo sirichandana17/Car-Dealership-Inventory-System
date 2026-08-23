@@ -112,7 +112,7 @@ export default function VehicleDetail({ vehicleId, onClose, onPurchase, purchasi
           {/* Purchase button */}
           {user && (
             <button
-              onClick={() => { onPurchase(v); onClose(); }}
+              onClick={() => { onClose(); onPurchase(v); }}
               disabled={outOfStock || purchasing === v.id}
               className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all mb-6
                 ${outOfStock

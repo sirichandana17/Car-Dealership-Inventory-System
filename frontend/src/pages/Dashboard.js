@@ -3,6 +3,7 @@ import api from '../api/axios';
 import Navbar from '../components/Navbar';
 import VehicleCard from '../components/VehicleCard';
 import VehicleDetail from '../components/VehicleDetail';
+import PurchaseConfirm from '../components/PurchaseConfirm';
 import SearchFilters from '../components/SearchFilters';
 import Loading from '../components/Loading';
 import Notification from '../components/Notification';
@@ -12,12 +13,13 @@ const emptyFilters = { make: '', model: '', category: '', minPrice: '', maxPrice
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState(emptyFilters);
-  const [purchasing, setPurchasing] = useState(null);
+  const [vehicles, setVehicles]       = useState([]);
+  const [loading, setLoading]         = useState(true);
+  const [filters, setFilters]         = useState(emptyFilters);
+  const [purchasing, setPurchasing]   = useState(null);
   const [notification, setNotification] = useState(null);
-  const [detailId, setDetailId] = useState(null);
+  const [detailId, setDetailId]       = useState(null);
+  const [purchased, setPurchased]     = useState(null); // vehicle object after purchase
 
   const fetchVehicles = useCallback(async () => {
     setLoading(true);
@@ -41,8 +43,12 @@ export default function Dashboard() {
     setPurchasing(vehicle.id);
     try {
       await api.post(`/vehicles/${vehicle.id}/purchase`);
-      setVehicles(prev => prev.map(v => v.id === vehicle.id ? { ...v, quantity: v.quantity - 1 } : v));
-      setNotification({ message: `${vehicle.make} ${vehicle.model} purchased!`, type: 'success' });
+      // Update stock count in list
+      setVehicles(prev => prev.map(v =>
+        v.id === vehicle.id ? { ...v, quantity: Number(v.quantity) - 1 } : v
+      ));
+      // Show confirmation modal
+      setPurchased(vehicle);
     } catch (err) {
       setNotification({ message: err.response?.data?.error || 'Purchase failed.', type: 'error' });
     } finally {
@@ -58,12 +64,21 @@ export default function Dashboard() {
         <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />
       )}
 
+      {/* Vehicle detail modal */}
       {detailId && (
         <VehicleDetail
           vehicleId={detailId}
           onClose={() => setDetailId(null)}
           onPurchase={handlePurchase}
           purchasing={purchasing}
+        />
+      )}
+
+      {/* Purchase confirmation modal */}
+      {purchased && (
+        <PurchaseConfirm
+          vehicle={purchased}
+          onClose={() => setPurchased(null)}
         />
       )}
 
