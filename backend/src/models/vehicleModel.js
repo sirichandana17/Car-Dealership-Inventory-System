@@ -1,9 +1,9 @@
 const { pool } = require('../config/db');
 
-async function create({ make, model, category, price, quantity }) {
+async function create({ make, model, category, price, quantity, image_url }) {
   const [result] = await pool.query(
-    'INSERT INTO vehicles (make, model, category, price, quantity) VALUES (?, ?, ?, ?, ?)',
-    [make, model, category, price, quantity]
+    'INSERT INTO vehicles (make, model, category, price, quantity, image_url) VALUES (?, ?, ?, ?, ?, ?)',
+    [make, model, category, price, quantity, image_url || null]
   );
   const [rows] = await pool.query('SELECT * FROM vehicles WHERE id = ?', [result.insertId]);
   return rows[0];
@@ -32,7 +32,7 @@ async function findById(id) {
 }
 
 async function update(id, fields) {
-  const allowed = ['make', 'model', 'category', 'price', 'quantity'];
+  const allowed = ['make', 'model', 'category', 'price', 'quantity', 'image_url'];
   const updates = Object.keys(fields).filter(k => allowed.includes(k));
   if (updates.length === 0) return findById(id);
   const sql = `UPDATE vehicles SET ${updates.map(k => `${k} = ?`).join(', ')} WHERE id = ?`;

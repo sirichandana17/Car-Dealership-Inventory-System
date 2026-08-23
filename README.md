@@ -6,7 +6,7 @@ A full-stack inventory management system for a car dealership.
 - **Backend:** Node.js + Express.js
 - **Database:** MySQL
 - **Auth:** JWT + bcrypt
-- **Frontend:** React + Tailwind CSS _(coming soon)_
+- **Frontend:** React + Tailwind CSS + React Router + Axios
 - **Testing:** Jest + Supertest
 
 ## Project Status
@@ -14,60 +14,65 @@ A full-stack inventory management system for a car dealership.
 |------|---------|--------|
 | 1 | Project foundation + MySQL schema | ✅ Done |
 | 2 | User authentication (register, login, JWT, middleware) | ✅ Done |
-| 3 | Vehicle inventory APIs | ✅ Done |
-| 4 | Frontend | 🔜 Pending |
+| 3 | Vehicle inventory APIs + image support | ✅ Done |
+| 4 | React frontend (all pages + components) | ✅ Done |
+| 5 | Dark UI theme + seed data + strong validation | ✅ Done |
 
-## Folder Structure
-```
-car-dealership/
-├── backend/
-│   ├── src/
-│   │   ├── config/        # DB connection + schema
-│   │   ├── controllers/   # Route handlers
-│   │   ├── middleware/     # JWT auth + admin guard
-│   │   ├── models/        # DB queries
-│   │   ├── routes/        # Express routers
-│   │   ├── services/      # Business logic
-│   │   ├── tests/         # Jest + Supertest
-│   │   ├── app.js
-│   │   └── server.js
-│   ├── .env               # Local credentials (never commit)
-│   ├── .env.example       # Template
-│   ├── .env.test          # Test DB credentials
-│   └── package.json
-├── frontend/              # Coming soon
-├── .gitignore
-├── PROMPTS.md
-└── README.md
-```
+## Quick Start
 
-## Setup
-
-### 1. Database
+### 1. Database Setup
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS car_dealership;"
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS car_dealership_test;"
 mysql -u root -p car_dealership < backend/src/config/schema.sql
+mysql -u root -p car_dealership_test < backend/src/config/schema.sql
 ```
 
 ### 2. Backend
 ```bash
 cd backend
-cp .env.example .env
-# Fill in your credentials in .env
+cp .env.example .env        # fill in your credentials
 npm install
-npm start
+node seed.js                # seeds admin + 12 vehicles
+npm start                   # runs on http://localhost:3000
 ```
-Server runs on `http://localhost:3000`
 
-### 3. Run Tests
+### 3. Frontend
+Open a second terminal:
 ```bash
-# Create test database first
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS car_dealership_test;"
-mysql -u root -p car_dealership_test < backend/src/config/schema.sql
+cd frontend
+npm install
+npm start                   # runs on http://localhost:3001
+```
 
+### 4. Run Tests
+```bash
 cd backend
 npm test
 ```
+
+## Ports
+| Service | Port |
+|---------|------|
+| Backend API | 3000 |
+| Frontend React | 3001 |
+
+> If you see `EADDRINUSE`, run:
+> ```powershell
+> netstat -aon | findstr :3000
+> taskkill /PID <pid> /F
+> ```
+
+## Demo Credentials
+
+### Admin
+| Field | Value |
+|-------|-------|
+| Email | `admin@autodealer.com` |
+| Password | `Admin@1234` |
+
+### Register a normal user
+Visit `http://localhost:3001/register`
 
 ## API Endpoints
 
@@ -89,9 +94,17 @@ npm test
 | POST | `/api/vehicles/:id/purchase` | User | Purchase vehicle (qty -1) |
 | POST | `/api/vehicles/:id/restock` | Admin | Restock vehicle |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Server health check |
+## Frontend Pages
+| Page | Route | Access |
+|------|-------|--------|
+| Login | `/login` | Public |
+| Register | `/register` | Public |
+| Vehicle Showroom | `/dashboard` | Logged-in users |
+| Admin Dashboard | `/admin` | ADMIN role only |
 
-## Environment Variables
-See `.env.example` for all required variables.
+## Password Requirements
+- Minimum 8 characters
+- At least one uppercase letter (A-Z)
+- At least one lowercase letter (a-z)
+- At least one number (0-9)
+- At least one special character (!@#$%...)
