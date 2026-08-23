@@ -151,19 +151,20 @@ The client opens at `http://localhost:3001` and proxies API calls to port 3000.
 ## API Endpoints
 
 | Method | Endpoint | Access | Description |
-| --- | --- | --- |
-| GET | `/health` | Public | Health check |
-| POST | `/api/auth/register` | Public | Create a user account |
-| POST | `/api/auth/login` | Public | Return a JWT |
-| GET | `/api/auth/me` | Authenticated | Return the signed-in user |
-| GET | `/api/vehicles` | Public | List vehicles |
-| GET | `/api/vehicles/search` | Public | Filter by `make`, `model`, `category`, `minPrice`, `maxPrice` |
-| GET | `/api/vehicles/:id` | Public | Vehicle and similar models |
-| POST | `/api/vehicles` | Admin | Add a vehicle |
-| PUT | `/api/vehicles/:id` | Admin | Update a vehicle |
-| DELETE | `/api/vehicles/:id` | Admin | Delete a vehicle |
-| POST | `/api/vehicles/:id/purchase` | Authenticated | Purchase one in-stock vehicle |
-| POST | `/api/vehicles/:id/restock` | Admin | Increase stock (`{ "amount": number }`) |
+|--------|----------|--------|-------------|
+| `GET` | `/health` | Public | Health check |
+| `POST` | `/api/auth/register` | Public | Create a new user account |
+| `POST` | `/api/auth/login` | Public | Authenticate user and return JWT |
+| `GET` | `/api/auth/me` | Authenticated | Return the currently signed-in user |
+| `GET` | `/api/vehicles` | Public | List all vehicles |
+| `GET` | `/api/vehicles/search` | Public | Search and filter vehicles |
+| `GET` | `/api/vehicles/:id` | Public | Get vehicle details and similar models |
+| `POST` | `/api/vehicles` | Admin | Add a new vehicle |
+| `PUT` | `/api/vehicles/:id` | Admin | Update vehicle details |
+| `DELETE` | `/api/vehicles/:id` | Admin | Delete a vehicle |
+| `POST` | `/api/vehicles/:id/purchase` | Authenticated | Purchase an in-stock vehicle |
+| `POST` | `/api/vehicles/:id/restock` | Admin | Increase vehicle stock |
+
 
 ## Authentication and Security
 
