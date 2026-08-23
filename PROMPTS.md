@@ -24,3 +24,9 @@ Built full React frontend with Tailwind CSS dark theme, React Router, and Axios.
 - Seeded admin account: `admin@autodealer.com` / `Admin@1234`
 - Strong password validation (uppercase, lowercase, number, special char)
 - Strict email regex on both frontend and backend
+
+## Step 6 — Final Review & Documentation
+
+- Finalized the project with Codex assistance through code review, debugging, testing, security checks, and documentation updates.
+
+- Verified backend tests, frontend functionality, authentication, inventory, purchase flow, and overall project readiness.
