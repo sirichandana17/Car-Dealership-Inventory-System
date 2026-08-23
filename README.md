@@ -14,7 +14,7 @@ A full-stack inventory management system for a car dealership.
 |------|---------|--------|
 | 1 | Project foundation + MySQL schema | ✅ Done |
 | 2 | User authentication (register, login, JWT, middleware) | ✅ Done |
-| 3 | Vehicle inventory APIs | 🔜 Next |
+| 3 | Vehicle inventory APIs | ✅ Done |
 | 4 | Frontend | 🔜 Pending |
 
 ## Folder Structure
@@ -78,7 +78,17 @@ npm test
 | POST | `/api/auth/login` | Public | Login, returns JWT |
 | GET | `/api/auth/me` | User | Get current user |
 
-### Health
+### Vehicles
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/vehicles` | Admin | Add a new vehicle |
+| GET | `/api/vehicles` | Public | Get all vehicles |
+| GET | `/api/vehicles/search` | Public | Search/filter vehicles |
+| PUT | `/api/vehicles/:id` | Admin | Update vehicle |
+| DELETE | `/api/vehicles/:id` | Admin | Delete vehicle |
+| POST | `/api/vehicles/:id/purchase` | User | Purchase vehicle (qty -1) |
+| POST | `/api/vehicles/:id/restock` | Admin | Restock vehicle |
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/health` | Server health check |
