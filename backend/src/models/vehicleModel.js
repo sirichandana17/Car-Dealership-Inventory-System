@@ -1,9 +1,12 @@
 const { pool } = require('../config/db');
 
-async function create({ make, model, category, price, quantity }) {
+async function create({ make, model, category, year, price, quantity, fuel_type, transmission, mileage, description, image_url }) {
   const [result] = await pool.query(
-    'INSERT INTO vehicles (make, model, category, price, quantity) VALUES (?, ?, ?, ?, ?)',
-    [make, model, category, price, quantity]
+    `INSERT INTO vehicles (make, model, category, year, price, quantity, fuel_type, transmission, mileage, description, image_url)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [make, model, category, year || 2024, price, quantity,
+     fuel_type || 'Petrol', transmission || 'Automatic',
+     mileage || null, description || null, image_url || null]
   );
   const [rows] = await pool.query('SELECT * FROM vehicles WHERE id = ?', [result.insertId]);
   return rows[0];
@@ -17,11 +20,12 @@ async function findAll() {
 async function search({ make, model, category, minPrice, maxPrice }) {
   let sql = 'SELECT * FROM vehicles WHERE 1=1';
   const params = [];
-  if (make)     { sql += ' AND make = ?';           params.push(make); }
-  if (model)    { sql += ' AND model = ?';          params.push(model); }
-  if (category) { sql += ' AND category = ?';       params.push(category); }
-  if (minPrice) { sql += ' AND price >= ?';         params.push(Number(minPrice)); }
-  if (maxPrice) { sql += ' AND price <= ?';         params.push(Number(maxPrice)); }
+  if (make)     { sql += ' AND make LIKE ?';     params.push(`%${make}%`); }
+  if (model)    { sql += ' AND model LIKE ?';    params.push(`%${model}%`); }
+  if (category) { sql += ' AND category LIKE ?'; params.push(`%${category}%`); }
+  if (minPrice) { sql += ' AND price >= ?';      params.push(Number(minPrice)); }
+  if (maxPrice) { sql += ' AND price <= ?';      params.push(Number(maxPrice)); }
+  sql += ' ORDER BY created_at DESC';
   const [rows] = await pool.query(sql, params);
   return rows;
 }
@@ -31,8 +35,16 @@ async function findById(id) {
   return rows[0] || null;
 }
 
+async function findByMake(make, excludeId) {
+  const [rows] = await pool.query(
+    'SELECT * FROM vehicles WHERE make = ? AND id != ? LIMIT 4',
+    [make, excludeId]
+  );
+  return rows;
+}
+
 async function update(id, fields) {
-  const allowed = ['make', 'model', 'category', 'price', 'quantity'];
+  const allowed = ['make', 'model', 'category', 'year', 'price', 'quantity', 'fuel_type', 'transmission', 'mileage', 'description', 'image_url'];
   const updates = Object.keys(fields).filter(k => allowed.includes(k));
   if (updates.length === 0) return findById(id);
   const sql = `UPDATE vehicles SET ${updates.map(k => `${k} = ?`).join(', ')} WHERE id = ?`;
@@ -54,4 +66,4 @@ async function incrementQuantity(id, amount) {
   return findById(id);
 }
 
-module.exports = { create, findAll, search, findById, update, remove, decrementQuantity, incrementQuantity };
+module.exports = { create, findAll, search, findById, findByMake, update, remove, decrementQuantity, incrementQuantity };

@@ -2,7 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createUser, findByEmail } = require('../models/userModel');
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}|:;<>?,./]).{8,}$/;
 const SALT_ROUNDS = 10;
 
 async function register({ name, email, password }) {
@@ -12,7 +13,12 @@ async function register({ name, email, password }) {
     throw err;
   }
   if (!EMAIL_RE.test(email)) {
-    const err = new Error('Invalid email format');
+    const err = new Error('Invalid email format. Must be a valid address like user@example.com');
+    err.status = 400;
+    throw err;
+  }
+  if (!PASSWORD_RE.test(password)) {
+    const err = new Error('Password must be at least 8 characters and include uppercase, lowercase, number and special character.');
     err.status = 400;
     throw err;
   }

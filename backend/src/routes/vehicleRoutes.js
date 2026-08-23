@@ -5,6 +5,7 @@ const { authenticate, requireAdmin } = require('../middleware/auth');
 router.get('/search',           ctrl.searchVehicles);
 router.get('/',                 ctrl.getAllVehicles);
 router.post('/',                authenticate, requireAdmin, ctrl.createVehicle);
+router.get('/:id',              ctrl.getVehicle);
 router.put('/:id',              authenticate, requireAdmin, ctrl.updateVehicle);
 router.delete('/:id',           authenticate, requireAdmin, ctrl.deleteVehicle);
 router.post('/:id/purchase',    authenticate, ctrl.purchaseVehicle);
